@@ -134,3 +134,31 @@ src/main/resources/keys/
 - Separação por camada (Clean Architecture)
 
 ---
+
+## 🧪 Teste de validação local com Python
+
+O projeto inclui um script `validate_token.py` que simula o papel de um parceiro externo consumindo o token:
+
+- Gera um token usando o endpoint `/token/generate`
+- Busca a chave pública no endpoint `/jwks.json`
+- Extrai o `kid` do JWT
+- Valida a assinatura do token localmente usando `pyjwt` e `cryptography`
+
+### 📄 Requisitos
+
+```bash
+pip install requests pyjwt cryptography
+```
+
+### ▶️ Executar o script
+
+```bash
+python validate_token.py
+```
+
+### ✅ Resultado esperado
+
+- Token válido? true
+- Payload decodificado exibido no terminal
+
+Esse teste confirma que o endpoint `.well-known/jwks.json` está funcionando corretamente e que os tokens assinados são válidos para consumo por sistemas externos.
