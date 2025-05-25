@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: jwks
+
+token:
+  expiration:
+    days: 30
+
+server:
+  port: 8080
+
+keys:
+
+  signing-kid: kid1
+  list:
+    - kid: kid1
+      public-path: /keys/public.pem
+      private-path: /keys/private.pem
