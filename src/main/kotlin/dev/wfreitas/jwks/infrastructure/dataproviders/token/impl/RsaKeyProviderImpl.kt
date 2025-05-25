@@ -1,7 +1,8 @@
-package dev.wfreitas.jwks.infrastructure.dataproviders.token
+package dev.wfreitas.jwks.infrastructure.dataproviders.token.impl
 
 import dev.wfreitas.jwks.domain.entity.RsaKey
 import dev.wfreitas.jwks.infrastructure.config.RsaKeyProperties
+import dev.wfreitas.jwks.infrastructure.dataproviders.token.RsaKeyProvider
 import org.springframework.stereotype.Component
 import java.io.InputStream
 import java.security.KeyFactory
@@ -22,7 +23,6 @@ class RsaKeyProviderImpl(
             entry.kid to key
         }
     }
-
     private val signingKid = props.signingKid
 
     override fun getSigningKey(): RsaKey {
@@ -30,15 +30,11 @@ class RsaKeyProviderImpl(
             ?: throw IllegalStateException("Signing key '$signingKid' not found.")
     }
 
-    override fun getPublicKeyByKid(kid: String): RsaKey? {
-        return keys[kid]
-    }
-
     override fun getAllPublicKeys(): List<RsaKey> {
         return keys.values.toList()
     }
 
-    private fun loadKey(kid: String, publicPath: String, privatePath: String): RsaKey {
+    protected open fun loadKey(kid: String, publicPath: String, privatePath: String): RsaKey {
         val publicKey = readPublicKey(publicPath)
         val privateKey = readPrivateKey(privatePath)
         return RsaKey(kid = kid, publicKey = publicKey, privateKey = privateKey)
